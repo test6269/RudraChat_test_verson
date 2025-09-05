@@ -108,8 +108,8 @@ export default function ChatPage() {
       </header>
 
       <div className="flex h-[calc(100vh-64px)]">
-        {/* Friends Sidebar */}
-        <div className="w-80 bg-card border-r border-border flex flex-col">
+        {/* Friends Sidebar - Hidden on mobile when friend is selected */}
+        <div className={`${selectedFriend ? 'hidden md:flex' : 'flex'} w-full md:w-80 bg-card border-r border-border flex-col`}>
           <div className="p-4 border-b border-border">
             <h2 className="text-lg font-medium text-card-foreground">Chats</h2>
           </div>
@@ -121,13 +121,23 @@ export default function ChatPage() {
           />
         </div>
 
-        {/* Chat Area */}
-        <div className="flex-1 flex flex-col">
+        {/* Chat Area - Hidden on mobile when no friend is selected */}
+        <div className={`${selectedFriend ? 'flex' : 'hidden md:flex'} flex-1 flex-col`}>
           {selectedFriend ? (
             <>
               {/* Chat Header */}
               <div className="bg-card border-b border-border px-4 py-3">
                 <div className="flex items-center space-x-3">
+                  {/* Back button for mobile */}
+                  <button
+                    onClick={() => setSelectedFriend(null)}
+                    className="md:hidden p-2 hover:bg-accent rounded-lg"
+                    data-testid="button-back-mobile"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
                   <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
                     <span className="text-secondary-foreground font-medium">
                       {selectedFriend.name
@@ -158,13 +168,13 @@ export default function ChatPage() {
               </div>
 
               {/* Message Input */}
-              <div className="bg-card border-t border-border p-4">
+              <div className="bg-card border-t border-border p-3 sm:p-4">
                 <form onSubmit={handleSendMessage} className="flex space-x-2">
                   <input
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="flex-1 px-4 py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="flex-1 px-3 py-2 sm:px-4 sm:py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-base"
                     placeholder="Type a message..."
                     data-testid="input-message"
                   />
@@ -172,6 +182,7 @@ export default function ChatPage() {
                     type="submit"
                     disabled={!newMessage.trim()}
                     data-testid="button-send"
+                    className="px-4 py-2 sm:px-6"
                   >
                     Send
                   </Button>

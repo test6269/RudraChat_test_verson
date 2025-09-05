@@ -74,7 +74,7 @@
   }
 
   .chat-bubble {
-    @apply max-w-[70%] break-words;
+    @apply break-words;
   }
 
   .fade-in {
@@ -83,6 +83,13 @@
 
   .slide-up {
     animation: slideUp 0.3s ease-out;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .chat-bubble {
+      @apply text-sm px-3 py-2;
+    }
   }
 }
 

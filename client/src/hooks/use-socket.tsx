@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import type { Message, InsertMessage } from "@shared/schema";
 
 interface UseSocketReturn {
@@ -11,6 +11,9 @@ export function useSocket(
 ): UseSocketReturn {
   const socketRef = useRef<WebSocket | null>(null);
 
+  const messageHandlerRef = useRef(onMessage);
+  messageHandlerRef.current = onMessage;
+
   useEffect(() => {
     if (!userId) return;
 
@@ -21,6 +24,7 @@ export function useSocket(
     socketRef.current = socket;
 
     socket.onopen = () => {
+      console.log('WebSocket connected');
       // Authenticate with user ID
       socket.send(JSON.stringify({
         type: 'auth',
@@ -32,7 +36,7 @@ export function useSocket(
       try {
         const data = JSON.parse(event.data);
         if (data.type === 'message') {
-          onMessage(data.data);
+          messageHandlerRef.current(data.data);
         }
       } catch (error) {
         console.error('WebSocket message parse error:', error);
@@ -43,19 +47,26 @@ export function useSocket(
       console.error('WebSocket error:', error);
     };
 
+    socket.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
+
     return () => {
       socket.close();
     };
-  }, [userId, onMessage]);
+  }, [userId]);
 
-  const sendMessage = (message: InsertMessage) => {
+  const sendMessage = useCallback((message: InsertMessage) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify({
         type: 'message',
         data: message
       }));
+      console.log('Message sent:', message);
+    } else {
+      console.error('WebSocket not connected, message not sent');
     }
-  };
+  }, []);
 
   return { sendMessage };
 }
