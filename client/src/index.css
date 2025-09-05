@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 94.1%);
+  --foreground: hsl(0, 0%, 10.2%);
+  --card: hsl(0, 0%, 98.8%);
+  --card-foreground: hsl(0, 0%, 0%);
+  --popover: hsl(45, 25%, 97%);
+  --popover-foreground: hsl(0, 0%, 100%);
+  --primary: hsl(349.4, 90.6%, 52.2%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(0, 0%, 76.9%);
+  --secondary-foreground: hsl(0, 0%, 10.2%);
+  --muted: hsl(0, 0%, 89%);
+  --muted-foreground: hsl(0, 0%, 13.1%);
+  --accent: hsl(0, 0%, 100%);
+  --accent-foreground: hsl(0, 0%, 10.2%);
+  --destructive: hsl(356.3033, 90.5579%, 54.3137%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 91%);
+  --input: hsl(0, 0%, 71%);
+  --ring: hsl(0, 0%, 41.96%);
+  --radius: 0.8rem;
+  --font-sans: 'Poppins', sans-serif;
+  --font-serif: 'Poppins', sans-serif;
+  --font-mono: Menlo, monospace;
+}
+
+.dark {
+  --background: hsl(20, 14.3%, 4.1%);
+  --foreground: hsl(45, 25%, 90.8%);
+  --card: hsl(20, 14.3%, 8.2%);
+  --card-foreground: hsl(45, 25%, 85%);
+  --popover: hsl(20, 14.3%, 4.1%);
+  --popover-foreground: hsl(45, 25%, 90.8%);
+  --primary: hsl(9, 75%, 61%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(30, 15%, 52%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(20, 14.3%, 15%);
+  --muted-foreground: hsl(45, 15%, 46%);
+  --accent: hsl(25, 45%, 20%);
+  --accent-foreground: hsl(45, 25%, 85%);
+  --destructive: hsl(356.3033, 90.5579%, 54.3137%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(20, 14.3%, 15%);
+  --input: hsl(20, 14.3%, 18%);
+  --ring: hsl(9, 75%, 61%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  html {
+    @apply dark;
+  }
+}
+
+@layer components {
+  .message-outgoing {
+    @apply bg-blue-600 text-white;
+  }
+  
+  .message-incoming {
+    @apply bg-slate-700 text-gray-100;
+  }
+
+  .chat-bubble {
+    @apply max-w-[70%] break-words;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
