@@ -32,7 +32,7 @@ export default function SignupPage() {
       return await response.json();
     },
     onSuccess: (data) => {
-      setGeneratedRno(data.rno);
+      setGeneratedRno(data.user.rno);
       setShowRnoModal(true);
     },
     onError: () => {

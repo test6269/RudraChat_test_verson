@@ -37,7 +37,7 @@ export default function ChatPage() {
   const { data: friends = [], refetch: refetchFriends } = useQuery({
     queryKey: ["/api/friends", user?.id],
     enabled: !!user?.id,
-  });
+  }) as { data: UserType[]; refetch: () => void };
 
   // Fetch messages when friend is selected
   const { data: chatMessages = [] } = useQuery({
@@ -47,7 +47,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (chatMessages) {
-      setMessages(chatMessages);
+      setMessages(chatMessages as Message[]);
     }
   }, [chatMessages]);
 
