@@ -48,7 +48,7 @@ export default function ChatPage() {
 
   // Check authentication
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    const userData = sessionStorage.getItem("user");
     if (!userData) {
       setLocation("/login");
       return;
@@ -93,7 +93,7 @@ export default function ChatPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     setLocation("/login");
   };
 

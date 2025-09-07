@@ -29,8 +29,8 @@ export default function LoginPage() {
       return await response.json();
     },
     onSuccess: (data) => {
-      // Store user data in localStorage for session management
-      localStorage.setItem("user", JSON.stringify(data.user));
+      // Store user data in sessionStorage to avoid conflicts between tabs
+      sessionStorage.setItem("user", JSON.stringify(data.user));
       setLocation("/chat");
     },
     onError: () => {

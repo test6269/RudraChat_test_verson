@@ -25,8 +25,8 @@ export default function ProfileModal({ user, onClose, onLogout }: ProfileModalPr
       return await response.json();
     },
     onSuccess: (data) => {
-      // Update localStorage with new user data
-      localStorage.setItem("user", JSON.stringify(data.user));
+      // Update sessionStorage with new user data
+      sessionStorage.setItem("user", JSON.stringify(data.user));
       toast({
         title: "Profile Updated",
         description: "Your profile has been updated successfully.",
