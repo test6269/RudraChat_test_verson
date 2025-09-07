@@ -79,7 +79,7 @@
   }
   
   .message-incoming {
-    @apply bg-card text-foreground border border-border/30;
+    @apply bg-card text-foreground border border-border;
   }
 
   .chat-bubble {
@@ -97,7 +97,7 @@
   /* Teal gradient button */
   .btn-teal {
     background: linear-gradient(135deg, var(--teal-primary), var(--teal-secondary));
-    @apply text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-[var(--teal-primary)]/20 hover:scale-105;
+    @apply text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:scale-105;
   }
 
   .btn-teal:hover {
@@ -131,7 +131,7 @@
 
   /* Modern input styles */
   .input-modern {
-    @apply bg-card border-border/30 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200;
+    @apply bg-card border border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary transition-all duration-200;
   }
 
   /* Mobile optimizations */
