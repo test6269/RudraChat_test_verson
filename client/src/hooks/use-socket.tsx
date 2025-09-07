@@ -8,7 +8,8 @@ interface UseSocketReturn {
 
 export function useSocket(
   userId: string | undefined,
-  onMessage: (message: Message) => void
+  onMessage: (message: Message) => void,
+  onFriendAdded?: () => void
 ): UseSocketReturn {
   const socketRef = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -46,6 +47,11 @@ export function useSocket(
         if (data.type === 'message') {
           console.log('Received message:', data.data);
           messageHandlerRef.current(data.data);
+        } else if (data.type === 'friend_added') {
+          console.log('New friend added:', data.data);
+          if (onFriendAdded) {
+            onFriendAdded();
+          }
         }
       } catch (error) {
         console.error('WebSocket message parse error:', error);

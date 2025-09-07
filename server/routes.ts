@@ -10,6 +10,7 @@ interface AuthenticatedWebSocket extends WebSocket {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  let wss: WebSocketServer; // Declare wss variable to be accessible in routes
   // Authentication routes
   app.post("/api/signup", async (req, res) => {
     try {
@@ -66,6 +67,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const success = await storage.addFriend(userId, friendRno);
       
       if (success) {
+        // Get the friend user data to broadcast the friendship
+        const friend = await storage.getUserByRno(friendRno);
+        const user = await storage.getUser(userId);
+        
+        if (friend && user) {
+          // Broadcast friend addition to both users via WebSocket
+          wss.clients.forEach((client: AuthenticatedWebSocket) => {
+            if (client.readyState === WebSocket.OPEN) {
+              // Notify the user who added the friend
+              if (client.userId === userId) {
+                client.send(JSON.stringify({
+                  type: 'friend_added',
+                  data: { id: friend.id, name: friend.name, rno: friend.rno }
+                }));
+              }
+              // Notify the friend who was added
+              if (client.userId === friend.id) {
+                client.send(JSON.stringify({
+                  type: 'friend_added',
+                  data: { id: user.id, name: user.name, rno: user.rno }
+                }));
+              }
+            }
+          });
+        }
+        
         res.json({ success: true });
       } else {
         res.status(400).json({ error: "Friend not found or already added" });
@@ -106,7 +133,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
 
   // WebSocket server for real-time messaging
-  const wss = new WebSocketServer({ 
+  wss = new WebSocketServer({ 
     server: httpServer, 
     path: '/ws',
     perMessageDeflate: false,

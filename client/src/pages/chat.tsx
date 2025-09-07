@@ -44,6 +44,10 @@ export default function ChatPage() {
       }
       return prev;
     });
+  }, () => {
+    // Callback for when a new friend is added
+    console.log('Friend added, refreshing friends list');
+    refetchFriends();
   });
 
   // Check authentication
