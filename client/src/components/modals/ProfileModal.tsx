@@ -72,16 +72,16 @@ export default function ProfileModal({ user, onClose, onLogout }: ProfileModalPr
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-card-foreground">Profile & Settings</h3>
-            <Button variant="ghost" size="icon" onClick={onClose} data-testid="button-close-profile">
-              <X className="text-muted-foreground" size={20} />
+            <Button variant="ghost" size="icon" onClick={onClose} data-testid="button-close-profile" className="icon-hover">
+              <X className="icon-default" size={20} />
             </Button>
           </div>
 
           <div className="space-y-6">
             {/* Profile Picture */}
             <div className="text-center">
-              <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl font-bold text-primary-foreground">
+              <div className="w-20 h-20 profile-circle mx-auto mb-3">
+                <span className="text-2xl font-bold text-white">
                   {user.name
                     .split(" ")
                     .map((n) => n[0])
@@ -105,10 +105,10 @@ export default function ProfileModal({ user, onClose, onLogout }: ProfileModalPr
                     variant="ghost"
                     size="icon"
                     onClick={handleCopyRno}
-                    className="h-6 w-6"
+                    className="h-6 w-6 icon-hover"
                     data-testid="button-copy-rno"
                   >
-                    <Copy size={16} />
+                    <Copy size={16} className="icon-default" />
                   </Button>
                 </div>
               </div>
@@ -127,6 +127,7 @@ export default function ProfileModal({ user, onClose, onLogout }: ProfileModalPr
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="input-modern"
                 data-testid="input-profile-name"
               />
             </div>
@@ -135,7 +136,7 @@ export default function ProfileModal({ user, onClose, onLogout }: ProfileModalPr
             <div className="space-y-3">
               <Button
                 onClick={handleSaveChanges}
-                className="w-full"
+                className="w-full btn-teal"
                 disabled={updateProfileMutation.isPending}
                 data-testid="button-save-changes"
               >

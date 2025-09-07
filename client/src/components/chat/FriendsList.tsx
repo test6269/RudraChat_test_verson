@@ -30,8 +30,8 @@ export default function FriendsList({ friends, selectedFriend, onFriendSelect }:
           data-testid={`friend-item-${friend.id}`}
         >
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
-              <span className="text-secondary-foreground font-medium" data-testid="text-friend-initials">
+            <div className="w-12 h-12 profile-circle">
+              <span className="text-white font-medium" data-testid="text-friend-initials">
                 {friend.name
                   .split(" ")
                   .map((n) => n[0])

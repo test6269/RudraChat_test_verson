@@ -56,8 +56,8 @@ export default function AddFriendModal({ userId, onClose, onFriendAdded }: AddFr
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-card-foreground">Add Friend</h3>
-            <Button variant="ghost" size="icon" onClick={onClose} data-testid="button-close-add-friend">
-              <X className="text-muted-foreground" size={20} />
+            <Button variant="ghost" size="icon" onClick={onClose} data-testid="button-close-add-friend" className="icon-hover">
+              <X className="icon-default" size={20} />
             </Button>
           </div>
 
@@ -73,7 +73,7 @@ export default function AddFriendModal({ userId, onClose, onFriendAdded }: AddFr
                   placeholder="RUD-XXXXXXX"
                   value={friendRno}
                   onChange={(e) => setFriendRno(e.target.value)}
-                  className="font-mono"
+                  className="font-mono input-modern"
                   data-testid="input-friend-rno"
                 />
               </div>
@@ -100,7 +100,7 @@ export default function AddFriendModal({ userId, onClose, onFriendAdded }: AddFr
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1"
+                  className="flex-1 btn-teal"
                   disabled={!friendRno.trim() || addFriendMutation.isPending}
                   data-testid="button-add-friend-submit"
                 >

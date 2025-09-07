@@ -110,7 +110,7 @@ export default function ChatPage() {
       {/* Header */}
       <header className="bg-card border-b border-border px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center teal-glow">
             <MessageCircle className="text-primary-foreground" size={24} />
           </div>
           <h1 className="text-xl font-semibold text-card-foreground">Rudra Chat</h1>
@@ -133,16 +133,18 @@ export default function ChatPage() {
             size="icon"
             onClick={() => setShowAddFriendModal(true)}
             data-testid="button-add-friend"
+            className="icon-hover"
           >
-            <UserPlus className="text-card-foreground" size={20} />
+            <UserPlus className="icon-default" size={20} />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setShowProfileModal(true)}
             data-testid="button-profile"
+            className="icon-hover"
           >
-            <User className="text-card-foreground" size={20} />
+            <User className="icon-default" size={20} />
           </Button>
         </div>
       </header>
@@ -178,8 +180,8 @@ export default function ChatPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
-                  <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
-                    <span className="text-secondary-foreground font-medium">
+                  <div className="w-10 h-10 profile-circle">
+                    <span className="text-white font-medium">
                       {selectedFriend.name
                         .split(" ")
                         .map((n) => n[0])
@@ -214,7 +216,7 @@ export default function ChatPage() {
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="flex-1 px-3 py-2 sm:px-4 sm:py-2 bg-input border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-base"
+                    className="flex-1 px-3 py-2 sm:px-4 sm:py-2 input-modern rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-base"
                     placeholder="Type a message..."
                     data-testid="input-message"
                   />
@@ -222,7 +224,7 @@ export default function ChatPage() {
                     type="submit"
                     disabled={!newMessage.trim()}
                     data-testid="button-send"
-                    className="px-4 py-2 sm:px-6"
+                    className="px-4 py-2 sm:px-6 btn-teal"
                   >
                     Send
                   </Button>
