@@ -106,21 +106,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
 
   // WebSocket server for real-time messaging
-  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  const wss = new WebSocketServer({ 
+    server: httpServer, 
+    path: '/ws',
+    perMessageDeflate: false,
+    clientTracking: true
+  });
 
-  wss.on('connection', (ws: AuthenticatedWebSocket) => {
+  // Handle client connections
+  wss.on('connection', (ws: AuthenticatedWebSocket, req) => {
+    console.log('New WebSocket connection from:', req.socket.remoteAddress);
+    
+    // Send a heartbeat every 30 seconds to keep connection alive
+    const heartbeat = setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.ping();
+      }
+    }, 30000);
+
+    ws.on('pong', () => {
+      // Client responded to ping, connection is alive
+    });
+
     ws.on('message', async (data) => {
       try {
         const message = JSON.parse(data.toString());
         
         if (message.type === 'auth') {
           ws.userId = message.userId;
+          console.log(`User ${message.userId} authenticated`);
+          
+          // Send confirmation back to client
+          ws.send(JSON.stringify({
+            type: 'auth_success',
+            userId: message.userId
+          }));
         } else if (message.type === 'message') {
           // Validate and store message
           const messageData = insertMessageSchema.parse(message.data);
           const savedMessage = await storage.createMessage(messageData);
           
+          console.log(`Broadcasting message from ${messageData.senderId} to ${messageData.receiverId}`);
+          
           // Broadcast message to all connected clients in the conversation
+          let broadcastCount = 0;
           wss.clients.forEach((client: AuthenticatedWebSocket) => {
             if (client.readyState === WebSocket.OPEN && 
                 (client.userId === messageData.senderId || client.userId === messageData.receiverId)) {
@@ -128,16 +157,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 type: 'message',
                 data: savedMessage
               }));
+              broadcastCount++;
             }
           });
+          
+          console.log(`Message broadcast to ${broadcastCount} clients`);
         }
       } catch (error) {
         console.error('WebSocket message error:', error);
+        // Send error back to client
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Failed to process message'
+        }));
       }
     });
 
-    ws.on('close', () => {
-      console.log('Client disconnected');
+    ws.on('close', (code, reason) => {
+      console.log(`Client disconnected: ${ws.userId || 'unauthenticated'}, code: ${code}, reason: ${reason}`);
+      clearInterval(heartbeat);
+    });
+
+    ws.on('error', (error) => {
+      console.error('WebSocket error:', error);
+      clearInterval(heartbeat);
     });
   });
 

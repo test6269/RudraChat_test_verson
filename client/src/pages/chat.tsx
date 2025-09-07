@@ -32,7 +32,7 @@ export default function ChatPage() {
     userRef.current = user;
   }, [user]);
 
-  const { sendMessage } = useSocket(user?.id, (message: Message) => {
+  const { sendMessage, connectionStatus } = useSocket(user?.id, (message: Message) => {
     // Only add message if it belongs to the current conversation
     setMessages(prev => {
       const currentFriend = selectedFriendRef.current;
@@ -112,6 +112,18 @@ export default function ChatPage() {
           <h1 className="text-xl font-semibold text-card-foreground">Rudra Chat</h1>
         </div>
         <div className="flex items-center space-x-2">
+          {/* Connection Status Indicator */}
+          <div className="flex items-center space-x-1">
+            <div className={`w-2 h-2 rounded-full ${
+              connectionStatus === 'connected' ? 'bg-green-500' : 
+              connectionStatus === 'connecting' ? 'bg-yellow-500' : 'bg-red-500'
+            }`}></div>
+            <span className="text-xs text-muted-foreground">
+              {connectionStatus === 'connected' ? 'Online' : 
+               connectionStatus === 'connecting' ? 'Connecting...' : 'Offline'}
+            </span>
+          </div>
+          
           <Button
             variant="ghost"
             size="icon"
