@@ -58,7 +58,7 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         {/* Logo/Header */}
         <div className="text-center mb-8 fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4 teal-glow">
             <MessageCircle className="text-2xl text-primary-foreground" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-foreground">Rudra Chat</h1>
@@ -82,7 +82,7 @@ export default function SignupPage() {
                   placeholder="Enter your full name"
                   data-testid="input-name"
                   {...form.register("name")}
-                  className="mt-2"
+                  className="mt-2 input-modern"
                 />
                 {form.formState.errors.name && (
                   <p className="text-sm text-destructive mt-1">
@@ -101,7 +101,7 @@ export default function SignupPage() {
                   placeholder="Create a strong password"
                   data-testid="input-password"
                   {...form.register("password")}
-                  className="mt-2"
+                  className="mt-2 input-modern"
                 />
                 {form.formState.errors.password && (
                   <p className="text-sm text-destructive mt-1">
@@ -112,7 +112,7 @@ export default function SignupPage() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full btn-teal"
                 disabled={signupMutation.isPending}
                 data-testid="button-signup"
               >
@@ -125,7 +125,7 @@ export default function SignupPage() {
                 Already have an account?{" "}
                 <button
                   onClick={() => setLocation("/login")}
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline icon-hover"
                   data-testid="link-signin"
                 >
                   Sign In
@@ -174,7 +174,7 @@ export default function SignupPage() {
 
                   <Button
                     onClick={handleContinueToLogin}
-                    className="w-full"
+                    className="w-full btn-teal"
                     data-testid="button-continue-login"
                   >
                     Continue to Login

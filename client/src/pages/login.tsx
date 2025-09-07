@@ -51,7 +51,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo/Header */}
         <div className="text-center mb-8 fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4 teal-glow">
             <MessageCircle className="text-2xl text-primary-foreground" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-foreground">Welcome Back</h1>
@@ -75,7 +75,7 @@ export default function LoginPage() {
                   placeholder="RUD-XXXXXXX"
                   data-testid="input-rno"
                   {...form.register("rno")}
-                  className="mt-2 font-mono"
+                  className="mt-2 font-mono input-modern"
                 />
                 {form.formState.errors.rno && (
                   <p className="text-sm text-destructive mt-1">
@@ -94,7 +94,7 @@ export default function LoginPage() {
                   placeholder="Enter your password"
                   data-testid="input-password"
                   {...form.register("password")}
-                  className="mt-2"
+                  className="mt-2 input-modern"
                 />
                 {form.formState.errors.password && (
                   <p className="text-sm text-destructive mt-1">
@@ -105,7 +105,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full btn-teal"
                 disabled={loginMutation.isPending}
                 data-testid="button-signin"
               >
@@ -118,7 +118,7 @@ export default function LoginPage() {
                 Don't have an account?{" "}
                 <button
                   onClick={() => setLocation("/signup")}
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline icon-hover"
                   data-testid="link-create-account"
                 >
                   Create Account
