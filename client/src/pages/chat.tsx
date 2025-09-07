@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { MessageCircle, UserPlus, User } from "lucide-react";
@@ -18,9 +18,32 @@ export default function ChatPage() {
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  
+  // Use refs to ensure WebSocket callback has current values
+  const selectedFriendRef = useRef<UserType | null>(null);
+  const userRef = useRef<UserType | null>(null);
+  
+  // Update refs when state changes
+  useEffect(() => {
+    selectedFriendRef.current = selectedFriend;
+  }, [selectedFriend]);
+  
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
 
   const { sendMessage } = useSocket(user?.id, (message: Message) => {
-    setMessages(prev => [...prev, message]);
+    // Only add message if it belongs to the current conversation
+    setMessages(prev => {
+      const currentFriend = selectedFriendRef.current;
+      const currentUser = userRef.current;
+      if (currentFriend && currentUser &&
+          ((message.senderId === currentUser.id && message.receiverId === currentFriend.id) ||
+           (message.senderId === currentFriend.id && message.receiverId === currentUser.id))) {
+        return [...prev, message];
+      }
+      return prev;
+    });
   });
 
   // Check authentication
@@ -53,6 +76,7 @@ export default function ChatPage() {
 
   const handleFriendSelect = (friend: UserType) => {
     setSelectedFriend(friend);
+    setMessages([]); // Clear messages when switching friends
   };
 
   const handleSendMessage = (e: React.FormEvent) => {
